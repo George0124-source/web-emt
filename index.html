@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMT Valencia - Roleplay</title>
+    <!-- Iconos de Google -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Nuestro CSS Personalizado -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- BARRA SUPERIOR ROJA -->
+    <div class="top-bar d-flex justify-content-between align-items-center px-4">
+        <span class="text-white small">Contacto y ayuda</span>
+        <div class="top-actions">
+            <a href="#" class="text-white text-decoration-none small"><span class="material-icons align-middle fs-6">language</span> ES</a>
+            <a href="#" class="text-white text-decoration-none small ms-3" data-bs-toggle="modal" data-bs-target="#loginModal"><span class="material-icons align-middle fs-6">person</span> Iniciar sesión</a>
+        </div>
+    </div>
+
+    <!-- MENÚ DE NAVEGACIÓN (LOGO Y LINKS) -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <!-- Aquí iría el logo, he puesto texto simulando el logo -->
+                <h2 class="text-emt fw-bold m-0" style="letter-spacing: -1px;">EMT <span class="text-dark small d-block fs-6 ls-normal">VALÈNCIA</span></h2>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav fw-bold">
+                    <li class="nav-item"><a class="nav-link text-emt-hover" href="#">BUS</a></li>
+                    <li class="nav-item"><a class="nav-link text-emt-hover" href="#">PARKING</a></li>
+                    <li class="nav-item"><a class="nav-link text-emt-hover" href="#">EMPRESA</a></li>
+                    <li class="nav-item"><a class="nav-link text-emt-hover" href="#">COMUNICACIÓN</a></li>
+                    <li class="nav-item"><a class="nav-link text-emt-hover" href="#">CONTACTO</a></li>
+                    <li class="nav-item"><a class="nav-link text-emt" href="#"><span class="material-icons">search</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION (IMAGEN GRANDE ROJA) -->
+    <header class="hero-section d-flex align-items-center text-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1 class="display-3 fw-bold">MOVIMEMT <br> ROLEPLAY</h1>
+                    <p class="lead">Bienvenido al sistema de gestión de transporte público de la ciudad.</p>
+                </div>
+                <!-- Tarjeta Flotante estilo "Saldo y Recargas" pero para LOGIN -->
+                <div class="col-md-5 offset-md-1">
+                    <div class="card border-0 shadow-lg p-4" style="border-radius: 15px;">
+                        <h4 class="text-emt fw-bold mb-3">ACCESO RÁPIDO</h4>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-emt btn-lg text-start" data-bs-toggle="modal" data-bs-target="#loginConductor">
+                                <span class="material-icons align-middle me-2">directions_bus</span> Acceso Conductores (Tablet)
+                            </button>
+                            <button class="btn btn-outline-dark btn-lg text-start">
+                                <span class="material-icons align-middle me-2">credit_card</span> Consultar Saldo / Bonos
+                            </button>
+                            <button class="btn btn-outline-dark btn-lg text-start">
+                                <span class="material-icons align-middle me-2">map</span> Estado de Líneas
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- BARRA ROJA SEPARADORA -->
+    <div class="bg-emt p-4"></div>
+
+    <!-- SECCIÓN DE INFORMACIÓN (Estilo Captura 2) -->
+    <section class="container my-5">
+        <div class="row">
+            <!-- Columna 1: Estado -->
+            <div class="col-md-4 mb-4">
+                <div class="d-flex">
+                    <span class="material-icons text-emt fs-1 me-3">traffic</span>
+                    <div>
+                        <h5 class="text-emt fw-bold">ESTADO DEL SERVICIO</h5>
+                        <p class="text-muted small">Consulta en tiempo real si la empresa está ABIERTA o CERRADA y qué líneas operan.</p>
+                        <span class="badge bg-success">EMPRESA ABIERTA</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Columna 2: App/Discord -->
+            <div class="col-md-4 mb-4">
+                <div class="d-flex">
+                    <span class="material-icons text-emt fs-1 me-3">smartphone</span>
+                    <div>
+                        <h5 class="text-emt fw-bold">APP OFICIAL / DISCORD</h5>
+                        <p class="text-muted small">Únete a nuestro sistema de comunicación para opositar o reportar incidencias.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Columna 3: Recargas -->
+            <div class="col-md-4 mb-4">
+                <div class="d-flex">
+                    <span class="material-icons text-emt fs-1 me-3">payment</span>
+                    <div>
+                        <h5 class="text-emt fw-bold">SALDO Y RECARGAS</h5>
+                        <p class="text-muted small">Introduce el número de tu tarjeta para realizar la consulta que necesites.</p>
+                        <input type="text" class="form-control bg-light border-0" placeholder="Número tarjeta móbilis">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL (VENTANA EMERGENTE) PARA LOGIN DE CONDUCTORES -->
+    <div class="modal fade" id="loginConductor" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-emt text-white">
+                    <h5 class="modal-title">Tablet de Conductor</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Ingresa tus credenciales para iniciar ruta.</p>
+                    <input type="text" class="form-control mb-2" placeholder="ID de Empleado">
+                    <input type="password" class="form-control mb-3" placeholder="Contraseña">
+                    <button class="btn btn-emt w-100">ENTRAR AL SISTEMA</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
