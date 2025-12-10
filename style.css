@@ -1,0 +1,73 @@
+/* Variables de colores EMT */
+:root {
+    --emt-red: #cf002d; /* El rojo oficial aprox */
+    --emt-dark: #333333;
+}
+
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #f9f9f9;
+}
+
+/* Barra superior pequeña */
+.top-bar {
+    background-color: var(--emt-red);
+    height: 40px;
+    font-size: 0.85rem;
+}
+
+/* Textos con color EMT */
+.text-emt {
+    color: var(--emt-red) !important;
+}
+
+.bg-emt {
+    background-color: var(--emt-red) !important;
+}
+
+/* Navegación */
+.navbar-nav .nav-link {
+    color: var(--emt-dark);
+    font-size: 0.9rem;
+    margin-left: 15px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--emt-red);
+}
+
+/* Hero Section (El banner grande) */
+.hero-section {
+    /* Aquí usaremos un degradado rojo similar a la foto. 
+       Si tienes una foto de fondo de buses del juego, ponla en url() */
+    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://www.emtvalencia.es/ciudadano/images/cabeceras/cabecera_home.jpg'); 
+    background-size: cover;
+    background-position: center;
+    min-height: 500px;
+    position: relative;
+}
+
+/* Si no carga la imagen de fondo, que se vea rojo al menos */
+.hero-section {
+    background-color: #a3001b; 
+}
+
+/* Botones personalizados */
+.btn-emt {
+    background-color: var(--emt-red);
+    color: white;
+    border: none;
+    font-weight: bold;
+}
+
+.btn-emt:hover {
+    background-color: #a3001b;
+    color: white;
+}
+
+/* Cards (Tarjetas) */
+.card {
+    background-color: rgba(255, 255, 255, 0.95);
+}
