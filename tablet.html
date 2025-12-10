@@ -2,33 +2,327 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Tablet EMT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMT Tablet - Operaciones</title>
+    <!-- Bootstrap 5 & Google Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <style>
+        /* ESTILO TABLET DARK MODE */
+        body { background-color: #121212; color: #e0e0e0; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; }
+        
+        /* Barra Superior */
+        .top-bar { background-color: #cf002d; height: 60px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        
+        /* Tarjetas */
+        .card-custom { background-color: #1e1e1e; border: 1px solid #333; border-radius: 12px; }
+        .card-header-custom { border-bottom: 1px solid #333; padding: 15px; font-weight: bold; text-transform: uppercase; color: #cf002d; }
+        
+        /* Inputs Oscuros */
+        .form-dark { background-color: #2c2c2c; border: 1px solid #444; color: white; }
+        .form-dark:focus { background-color: #333; color: white; border-color: #cf002d; box-shadow: none; }
+
+        /* Botones Grandes */
+        .btn-action { height: 60px; font-size: 1.2rem; font-weight: bold; text-transform: uppercase; }
+        
+        /* Lista Compañeros */
+        .list-group-item-dark { background-color: #2c2c2c; border-color: #444; color: #ccc; }
+        
+        /* Modal Oscuro */
+        .modal-content { background-color: #1e1e1e; color: white; border: 1px solid #444; }
+        .modal-header { border-bottom: 1px solid #333; }
+        .modal-footer { border-top: 1px solid #333; }
+    </style>
 </head>
-<body class="bg-dark text-white">
-    <div class="container mt-5 text-center">
-        <h1>📱 SISTEMA EMT - TABLET</h1>
-        <h3 id="mensajeBienvenida" class="text-success">Cargando...</h3>
-        <p>Aquí irá el mapa y el control de rutas.</p>
-        <button class="btn btn-danger" onclick="cerrarSesion()">Cerrar Sesión</button>
+<body>
+
+    <!-- BARRA SUPERIOR -->
+    <div class="top-bar d-flex justify-content-between align-items-center px-4">
+        <div class="d-flex align-items-center">
+            <span class="material-icons me-2 text-white">tablet_mac</span>
+            <span class="text-white fw-bold fs-5">EMT <span class="fw-light small">SYSTEM</span></span>
+        </div>
+        <div class="d-flex align-items-center text-white">
+            <span id="reloj" class="me-4 fw-bold font-monospace fs-5">00:00:00</span>
+            <div class="text-end me-3">
+                <div id="nombreConductor" class="fw-bold">Cargando...</div>
+                <div id="idConductor" class="small text-white-50">...</div>
+            </div>
+            <button onclick="cerrarSesion()" class="btn btn-sm btn-outline-light"><span class="material-icons">logout</span></button>
+        </div>
     </div>
 
-    <script>
-        // Leemos quién ha iniciado sesión
-        const usuarioGuardado = localStorage.getItem("usuario_emt");
-        
-        if (usuarioGuardado) {
-            const usuario = JSON.parse(usuarioGuardado);
-            document.getElementById("mensajeBienvenida").innerText = "Bienvenido, " + usuario.nombre;
-        } else {
-            // Si intenta entrar sin loguearse, lo echamos fuera
-            window.location.href = "index.html";
-        }
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="container-fluid mt-4">
+        <div class="row">
+            
+            <!-- COLUMNA IZQUIERDA: CONTROL DE RUTA -->
+            <div class="col-md-7">
+                <!-- Estado Empresa -->
+                <div class="mb-3 d-flex align-items-center">
+                    <span class="text-white-50 me-2">ESTADO CENTRAL:</span>
+                    <span id="badgeEmpresa" class="badge bg-danger">DESCONECTADO</span>
+                </div>
 
-        function cerrarSesion() {
-            localStorage.removeItem("usuario_emt");
+                <div class="card card-custom p-4 mb-3">
+                    <h4 class="text-white mb-4"><span class="material-icons align-middle text-danger">commute</span> CONTROL DE SERVICIO</h4>
+                    
+                    <!-- FORMULARIO: INICIAR RUTA (Se ve si NO estás trabajando) -->
+                    <div id="panelFormulario">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="text-white-50 mb-1">Número de Línea</label>
+                                <input type="number" id="inputLinea" class="form-control form-dark" placeholder="Ej: 5">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="text-white-50 mb-1">Tiempo Estimado (Min)</label>
+                                <input type="number" id="inputTiempo" class="form-control form-dark" placeholder="Ej: 15">
+                            </div>
+                        </div>
+                        <button id="btnIniciar" class="btn btn-success w-100 btn-action mt-4 shadow">
+                            <span class="material-icons align-middle me-2">play_arrow</span> INICIAR TURNO
+                        </button>
+                    </div>
+
+                    <!-- PANTALLA: EN RUTA (Se ve si SI estás trabajando) -->
+                    <div id="panelEnRuta" class="text-center py-4 d-none">
+                        <h2 class="text-success fw-bold">🟢 EN SERVICIO</h2>
+                        <h1 class="display-3 text-white fw-bold my-3">LÍNEA <span id="displayLinea">X</span></h1>
+                        <p class="text-white-50">Tu ubicación y estado son visibles en la web civil.</p>
+                        
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <button class="btn btn-warning w-100 py-3 fw-bold" data-bs-toggle="modal" data-bs-target="#modalFactura">
+                                    <span class="material-icons d-block fs-3">receipt_long</span>
+                                    COBRAR / TICKET
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <button id="btnFinalizar" class="btn btn-danger w-100 py-3 fw-bold">
+                                    <span class="material-icons d-block fs-3">stop</span>
+                                    FIN DE TURNO
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLUMNA DERECHA: COMPAÑEROS ACTIVOS -->
+            <div class="col-md-5">
+                <div class="card card-custom h-100">
+                    <div class="card-header-custom d-flex justify-content-between">
+                        <span>FLOTA ACTIVA</span>
+                        <span class="material-icons">map</span>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="listaCompaneros" class="list-group list-group-flush">
+                            <div class="p-3 text-center text-white-50">Cargando datos...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PARA EMITIR FACTURA/TICKET -->
+    <div class="modal fade" id="modalFactura" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Emitir Ticket de Bus</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="small text-white-50">Se registrará automáticamente la fecha, hora y tu nombre.</p>
+                    
+                    <label class="mb-1">Nombre o DNI del Ciudadano</label>
+                    <input type="text" id="facturaCliente" class="form-control form-dark mb-3" placeholder="Ej: Pepe (1234)">
+
+                    <label class="mb-1">Tipo de Bono / Concepto</label>
+                    <select id="facturaConcepto" class="form-select form-dark mb-3">
+                        <option value="Billete Sencillo">Billete Sencillo (1.50€)</option>
+                        <option value="Bono Joven">Recarga Bono Joven</option>
+                        <option value="Bono Oro">Recarga Bono Oro</option>
+                        <option value="Multa Evasión">Multa: Sin Ticket</option>
+                    </select>
+
+                    <label class="mb-1">Importe (€)</label>
+                    <input type="number" id="facturaImporte" class="form-control form-dark" placeholder="0.00">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="btnGuardarFactura" class="btn btn-primary bg-emt border-0">IMPRIMIR TICKET</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script type="module">
+        import { db, collection, addDoc, deleteDoc, doc, onSnapshot, query } from "./firebase.js";
+
+        // 1. SEGURIDAD: Verificar si está logueado
+        const usuarioStorage = localStorage.getItem("usuario_emt");
+        if (!usuarioStorage) {
+            alert("Debes iniciar sesión primero.");
             window.location.href = "index.html";
         }
+        const usuario = JSON.parse(usuarioStorage);
+
+        // Poner datos en la barra superior
+        document.getElementById("nombreConductor").innerText = usuario.nombre;
+        document.getElementById("idConductor").innerText = "ID: " + usuario.id_empleado;
+
+        // 2. VARIABLES Y RELOJ
+        const btnIniciar = document.getElementById('btnIniciar');
+        const btnFinalizar = document.getElementById('btnFinalizar');
+        const panelFormulario = document.getElementById('panelFormulario');
+        const panelEnRuta = document.getElementById('panelEnRuta');
+        let miRutaId = null; // Para guardar el ID de mi turno actual
+
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById("reloj").innerText = now.toLocaleTimeString();
+        }, 1000);
+
+        // 3. MONITORIZACIÓN EN TIEMPO REAL (SNAPSHOT)
+        // Esto controla la lista de compañeros y mi propio estado
+        onSnapshot(query(collection(db, "rutas_activas")), (snapshot) => {
+            const lista = document.getElementById("listaCompaneros");
+            const badge = document.getElementById("badgeEmpresa");
+            lista.innerHTML = "";
+            let busesActivos = 0;
+            let yoEstoyActivo = false;
+
+            snapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                busesActivos++;
+
+                // ¿Soy yo este conductor?
+                if (data.id_empleado === usuario.id_empleado) {
+                    yoEstoyActivo = true;
+                    miRutaId = docSnap.id;
+                    document.getElementById("displayLinea").innerText = data.linea;
+                }
+
+                // Añadir a la lista visual
+                const item = document.createElement("div");
+                item.className = "list-group-item list-group-item-dark d-flex justify-content-between align-items-center p-3";
+                item.innerHTML = `
+                    <div>
+                        <div class="fw-bold text-white">${data.nombre_conductor}</div>
+                        <div class="small text-white-50">Línea ${data.linea} | ${data.tiempo_estimado} min</div>
+                    </div>
+                    <span class="badge ${data.id_empleado === usuario.id_empleado ? 'bg-primary' : 'bg-success'}">
+                        ${data.id_empleado === usuario.id_empleado ? 'TÚ' : 'EN RUTA'}
+                    </span>
+                `;
+                lista.appendChild(item);
+            });
+
+            // Actualizar interfaz según mi estado
+            if (yoEstoyActivo) {
+                panelFormulario.classList.add('d-none');
+                panelEnRuta.classList.remove('d-none');
+            } else {
+                panelFormulario.classList.remove('d-none');
+                panelEnRuta.classList.add('d-none');
+            }
+
+            // Actualizar estado global empresa
+            if (busesActivos > 0) {
+                badge.className = "badge bg-success";
+                badge.innerText = `🟢 SERVICIO ABIERTO (${busesActivos} BUSES)`;
+            } else {
+                badge.className = "badge bg-danger";
+                badge.innerText = "🔴 SERVICIO CERRADO";
+                lista.innerHTML = '<div class="p-4 text-center text-muted">No hay servicio activo.</div>';
+            }
+        });
+
+        // 4. INICIAR RUTA
+        btnIniciar.addEventListener('click', async () => {
+            const linea = document.getElementById('inputLinea').value;
+            const tiempo = document.getElementById('inputTiempo').value;
+
+            if (!linea || !tiempo) return alert("Rellena la línea y el tiempo.");
+
+            try {
+                await addDoc(collection(db, "rutas_activas"), {
+                    id_empleado: usuario.id_empleado,
+                    nombre_conductor: usuario.nombre,
+                    linea: linea,
+                    tiempo_estimado: tiempo,
+                    inicio: new Date().toISOString()
+                });
+            } catch (e) {
+                console.error(e);
+                alert("Error de conexión.");
+            }
+        });
+
+        // 5. FINALIZAR RUTA
+        btnFinalizar.addEventListener('click', async () => {
+            if (miRutaId && confirm("¿Terminar turno?")) {
+                await deleteDoc(doc(db, "rutas_activas", miRutaId));
+                miRutaId = null;
+                // Limpiar campos
+                document.getElementById('inputLinea').value = "";
+                document.getElementById('inputTiempo').value = "";
+            }
+        });
+
+        // 6. SISTEMA DE FACTURAS (TICKETS)
+        const btnGuardarFactura = document.getElementById('btnGuardarFactura');
+        btnGuardarFactura.addEventListener('click', async () => {
+            const cliente = document.getElementById('facturaCliente').value;
+            const concepto = document.getElementById('facturaConcepto').value;
+            const importe = document.getElementById('facturaImporte').value;
+
+            if (!cliente || !importe) return alert("Rellena los datos del ticket.");
+
+            try {
+                // Guardar en colección 'facturas'
+                await addDoc(collection(db, "facturas"), {
+                    emisor_id: usuario.id_empleado,
+                    emisor_nombre: usuario.nombre,
+                    cliente: cliente,
+                    concepto: concepto,
+                    importe: importe + "€",
+                    fecha: new Date().toLocaleDateString(),
+                    hora: new Date().toLocaleTimeString(),
+                    timestamp: new Date().toISOString()
+                });
+
+                alert("✅ Ticket generado correctamente.");
+                
+                // Cerrar modal y limpiar
+                const modalEl = document.getElementById('modalFactura');
+                const modal = bootstrap.Modal.getInstance(modalEl);
+                modal.hide();
+                
+                document.getElementById('facturaCliente').value = "";
+                document.getElementById('facturaImporte').value = "";
+
+            } catch (e) {
+                console.error(e);
+                alert("Error al guardar ticket.");
+            }
+        });
+
+        // 7. CERRAR SESIÓN
+        window.cerrarSesion = function() {
+            if (miRutaId) {
+                alert("⚠️ ¡Estás en servicio! Finaliza turno antes de salir.");
+            } else {
+                localStorage.removeItem("usuario_emt");
+                window.location.href = "index.html";
+            }
+        };
     </script>
 </body>
 </html>
