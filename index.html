@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Nuestro CSS Personalizado -->
+    <!-- CSS Personalizado -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -18,15 +18,14 @@
         <span class="text-white small">Contacto y ayuda</span>
         <div class="top-actions">
             <a href="#" class="text-white text-decoration-none small"><span class="material-icons align-middle fs-6">language</span> ES</a>
-            <a href="#" class="text-white text-decoration-none small ms-3" data-bs-toggle="modal" data-bs-target="#loginModal"><span class="material-icons align-middle fs-6">person</span> Iniciar sesión</a>
+            <a href="#" class="text-white text-decoration-none small ms-3" data-bs-toggle="modal" data-bs-target="#loginConductor"><span class="material-icons align-middle fs-6">person</span> Iniciar sesión</a>
         </div>
     </div>
 
-    <!-- MENÚ DE NAVEGACIÓN (LOGO Y LINKS) -->
+    <!-- MENÚ DE NAVEGACIÓN -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <!-- Aquí iría el logo, he puesto texto simulando el logo -->
                 <h2 class="text-emt fw-bold m-0" style="letter-spacing: -1px;">EMT <span class="text-dark small d-block fs-6 ls-normal">VALÈNCIA</span></h2>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -38,14 +37,13 @@
                     <li class="nav-item"><a class="nav-link text-emt-hover" href="#">PARKING</a></li>
                     <li class="nav-item"><a class="nav-link text-emt-hover" href="#">EMPRESA</a></li>
                     <li class="nav-item"><a class="nav-link text-emt-hover" href="#">COMUNICACIÓN</a></li>
-                    <li class="nav-item"><a class="nav-link text-emt-hover" href="#">CONTACTO</a></li>
-                    <li class="nav-item"><a class="nav-link text-emt" href="#"><span class="material-icons">search</span></a></li>
+                    <li class="nav-item"><a class="nav-link text-emt-hover" href="admin.html">ADMIN</a></li> <!-- He añadido acceso directo a Admin aquí -->
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- HERO SECTION (IMAGEN GRANDE ROJA) -->
+    <!-- HERO SECTION (BANNER PRINCIPAL) -->
     <header class="hero-section d-flex align-items-center text-white">
         <div class="container">
             <div class="row align-items-center">
@@ -53,20 +51,25 @@
                     <h1 class="display-3 fw-bold">MOVIMEMT <br> ROLEPLAY</h1>
                     <p class="lead">Bienvenido al sistema de gestión de transporte público de la ciudad.</p>
                 </div>
-                <!-- Tarjeta Flotante estilo "Saldo y Recargas" pero para LOGIN -->
+                <!-- TARJETA DE ACCESO RÁPIDO -->
                 <div class="col-md-5 offset-md-1">
                     <div class="card border-0 shadow-lg p-4" style="border-radius: 15px;">
                         <h4 class="text-emt fw-bold mb-3">ACCESO RÁPIDO</h4>
                         <div class="d-grid gap-2">
+                            <!-- Botón 1: Login Conductores -->
                             <button class="btn btn-emt btn-lg text-start" data-bs-toggle="modal" data-bs-target="#loginConductor">
                                 <span class="material-icons align-middle me-2">directions_bus</span> Acceso Conductores (Tablet)
                             </button>
+                            
+                            <!-- Botón 2: Bonos (Futuro) -->
                             <button class="btn btn-outline-dark btn-lg text-start">
                                 <span class="material-icons align-middle me-2">credit_card</span> Consultar Saldo / Bonos
                             </button>
-                            <button class="btn btn-outline-dark btn-lg text-start">
-                                <span class="material-icons align-middle me-2">map</span> Estado de Líneas
-                            </button>
+                            
+                            <!-- Botón 3: Mapa (AHORA CON EL ENLACE CORRECTO) -->
+                            <a href="mapa.html" class="btn btn-outline-dark btn-lg text-start text-decoration-none">
+                                <span class="material-icons align-middle me-2">map</span> Estado de Líneas y Mapa
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -74,48 +77,49 @@
         </div>
     </header>
 
-    <!-- BARRA ROJA SEPARADORA -->
+    <!-- BARRA SEPARADORA -->
     <div class="bg-emt p-4"></div>
 
-    <!-- SECCIÓN DE INFORMACIÓN (Estilo Captura 2) -->
+    <!-- SECCIÓN DE INFORMACIÓN -->
     <section class="container my-5">
         <div class="row">
-            <!-- Columna 1: Estado -->
+            <!-- Estado del Servicio (AHORA ES DINÁMICO) -->
             <div class="col-md-4 mb-4">
                 <div class="d-flex">
                     <span class="material-icons text-emt fs-1 me-3">traffic</span>
                     <div>
                         <h5 class="text-emt fw-bold">ESTADO DEL SERVICIO</h5>
-                        <p class="text-muted small">Consulta en tiempo real si la empresa está ABIERTA o CERRADA y qué líneas operan.</p>
-                        <span class="badge bg-success">EMPRESA ABIERTA</span>
+                        <p class="text-muted small">Consulta en tiempo real si la empresa está operativa.</p>
+                        <!-- Este badge cambiará solo gracias al script de abajo -->
+                        <span id="badgeEstadoHome" class="badge bg-secondary">Cargando estado...</span>
                     </div>
                 </div>
             </div>
-            <!-- Columna 2: App/Discord -->
+
             <div class="col-md-4 mb-4">
                 <div class="d-flex">
                     <span class="material-icons text-emt fs-1 me-3">smartphone</span>
                     <div>
-                        <h5 class="text-emt fw-bold">APP OFICIAL / DISCORD</h5>
-                        <p class="text-muted small">Únete a nuestro sistema de comunicación para opositar o reportar incidencias.</p>
+                        <h5 class="text-emt fw-bold">APP / DISCORD</h5>
+                        <p class="text-muted small">Únete a nuestro sistema de comunicación para opositar.</p>
                     </div>
                 </div>
             </div>
-            <!-- Columna 3: Recargas -->
+
             <div class="col-md-4 mb-4">
                 <div class="d-flex">
                     <span class="material-icons text-emt fs-1 me-3">payment</span>
                     <div>
                         <h5 class="text-emt fw-bold">SALDO Y RECARGAS</h5>
-                        <p class="text-muted small">Introduce el número de tu tarjeta para realizar la consulta que necesites.</p>
-                        <input type="text" class="form-control bg-light border-0" placeholder="Número tarjeta móbilis">
+                        <p class="text-muted small">Introduce tu número de tarjeta móbilis.</p>
+                        <input type="text" class="form-control bg-light border-0" placeholder="Número tarjeta...">
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-<!-- MODAL PARA LOGIN DE CONDUCTORES -->
+    <!-- MODAL LOGIN CONDUCTOR -->
     <div class="modal fade" id="loginConductor" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -125,8 +129,7 @@
                 </div>
                 <div class="modal-body text-center">
                     <p>Ingresa tus credenciales para iniciar ruta.</p>
-                    <!-- HE AÑADIDO IDs AQUÍ ABAJO -->
-                    <input type="text" id="conductorId" class="form-control mb-2" placeholder="ID de Empleado">
+                    <input type="text" id="conductorId" class="form-control mb-2" placeholder="ID de Empleado (Ej: C-001)">
                     <input type="password" id="conductorPass" class="form-control mb-3" placeholder="Contraseña">
                     <button id="btnLogin" class="btn btn-emt w-100">ENTRAR AL SISTEMA</button>
                 </div>
@@ -137,10 +140,27 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- NUESTRO SCRIPT PRINCIPAL (TIPO MODULE ES NECESARIO PARA FIREBASE) -->
+    <!-- LÓGICA DE LOGIN (Main.js) -->
     <script type="module" src="main.js"></script>
-</body>
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- LÓGICA EXTRA: ESTADO EN TIEMPO REAL EN LA HOME -->
+    <script type="module">
+        import { db, collection, onSnapshot } from "./firebase.js";
+
+        // Escuchamos si hay rutas activas para cambiar el letrero de la portada
+        const badgeHome = document.getElementById('badgeEstadoHome');
+        
+        onSnapshot(collection(db, "rutas_activas"), (snapshot) => {
+            if (snapshot.empty) {
+                // Si no hay nadie trabajando
+                badgeHome.innerText = "🔴 EMPRESA CERRADA";
+                badgeHome.className = "badge bg-danger";
+            } else {
+                // Si hay gente trabajando
+                badgeHome.innerText = `🟢 EMPRESA ABIERTA (${snapshot.size} en ruta)`;
+                badgeHome.className = "badge bg-success";
+            }
+        });
+    </script>
 </body>
 </html>
