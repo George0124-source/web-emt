@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel Admin - EMT</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #1a1a1a; color: white; }
+        .login-box { max-width: 400px; margin: 100px auto; padding: 20px; background: #333; border-radius: 10px; }
+        .panel-creacion { display: none; max-width: 600px; margin: 50px auto; padding: 20px; background: #cf002d; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <!-- PANTALLA 1: LOGIN SECRETO -->
+    <div id="pantallaLogin" class="login-box text-center">
+        <h3>🔐 ACCESO DEVELOPER</h3>
+        <p>Introduce la clave maestra</p>
+        <input type="password" id="inputMasterPass" class="form-control mb-3" placeholder="Clave...">
+        <button id="btnDesbloquear" class="btn btn-light w-100">Desbloquear Sistema</button>
+    </div>
+
+    <!-- PANTALLA 2: FORMULARIO PARA CREAR CONDUCTORES (Oculto al principio) -->
+    <div id="pantallaAdmin" class="panel-creacion">
+        <h2 class="text-center mb-4">👷 CREAR NUEVO CONDUCTOR</h2>
+        
+        <label>Nombre y Apellido (IC):</label>
+        <input type="text" id="nuevoNombre" class="form-control mb-3" placeholder="Ej: Manolo Garcia">
+
+        <label>ID de Empleado (Usuario para loguear):</label>
+        <input type="text" id="nuevoID" class="form-control mb-3" placeholder="Ej: C-001">
+
+        <label>Contraseña para el Conductor:</label>
+        <input type="text" id="nuevaPass" class="form-control mb-4" placeholder="Ej: 1234">
+
+        <button id="btnGuardarEnFirebase" class="btn btn-dark w-100 py-2">💾 GUARDAR EN BASE DE DATOS</button>
+        
+        <div id="mensajeExito" class="alert alert-success mt-3 d-none">¡Conductor creado correctamente!</div>
+    </div>
+
+    <!-- LÓGICA -->
+    <script type="module">
+        // Importamos la conexión que ya tienes hecha
+        import { db, collection, addDoc } from "./firebase.js";
+
+        const CLAVE_MAESTRA = "Developer001george00_.";
+
+        // Elementos HTML
+        const pantallaLogin = document.getElementById('pantallaLogin');
+        const pantallaAdmin = document.getElementById('pantallaAdmin');
+        const btnDesbloquear = document.getElementById('btnDesbloquear');
+        
+        // --- 1. Lógica para desbloquear el panel ---
+        btnDesbloquear.addEventListener('click', () => {
+            const passEscrita = document.getElementById('inputMasterPass').value;
+            
+            if (passEscrita === CLAVE_MAESTRA) {
+                pantallaLogin.style.display = 'none'; // Ocultamos login
+                pantallaAdmin.style.display = 'block'; // Mostramos panel
+            } else {
+                alert("⛔ ACCESO DENEGADO: Clave incorrecta");
+            }
+        });
+
+        // --- 2. Lógica para guardar en Firebase ---
+        const btnGuardar = document.getElementById('btnGuardarEnFirebase');
+        
+        btnGuardar.addEventListener('click', async () => {
+            const nombre = document.getElementById('nuevoNombre').value;
+            const id = document.getElementById('nuevoID').value;
+            const pass = document.getElementById('nuevaPass').value;
+
+            if (nombre === "" || id === "" || pass === "") {
+                alert("Por favor, rellena todos los datos.");
+                return;
+            }
+
+            try {
+                // AQUÍ SE GUARDA AUTOMÁTICAMENTE EN FIREBASE
+                await addDoc(collection(db, "conductores"), {
+                    nombre: nombre,
+                    id_empleado: id,
+                    contrasena: pass,
+                    rango: "Conductor", // Por defecto
+                    fecha_creacion: new Date().toISOString()
+                });
+
+                // Limpiamos los inputs y avisamos
+                document.getElementById('nuevoNombre').value = "";
+                document.getElementById('nuevoID').value = "";
+                document.getElementById('nuevaPass').value = "";
+                
+                const alerta = document.getElementById('mensajeExito');
+                alerta.classList.remove('d-none');
+                
+                // Ocultar alerta a los 3 segundos
+                setTimeout(() => alerta.classList.add('d-none'), 3000);
+
+            } catch (e) {
+                console.error("Error: ", e);
+                alert("Hubo un error al guardar. Mira la consola (F12).");
+            }
+        });
+    </script>
+</body>
+</html>
