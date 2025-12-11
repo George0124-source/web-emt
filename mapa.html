@@ -14,46 +14,60 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <style>
-        body { background-color: #f4f4f4; height: 100vh; display: flex; flex-direction: column; }
+        /* ESTILO CORREGIDO PARA QUE EL MAPA SE VEA SIEMPRE */
+        body { 
+            background-color: #f4f4f4; 
+            margin: 0; 
+            padding: 0; 
+            height: 100vh; /* Ocupa toda la altura de la pantalla */
+            display: flex; 
+            flex-direction: column; 
+        }
         
-        /* Header Rojo EMT */
-        .emt-header { background-color: #cf002d; color: white; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 1000; }
+        /* Header Rojo */
+        .emt-header { 
+            background-color: #cf002d; 
+            color: white; 
+            padding: 10px 20px; 
+            height: 60px;
+            flex-shrink: 0; /* Que no se encoja */
+            z-index: 1000;
+        }
         
-        /* Contenedor Principal */
-        .main-content { flex: 1; display: flex; overflow: hidden; }
+        /* Contenedor Principal (Panel + Mapa) */
+        .main-content { 
+            flex-grow: 1; /* Ocupa el resto del espacio */
+            display: flex; 
+            height: calc(100vh - 60px); /* Restamos la altura del header */
+            overflow: hidden; 
+        }
 
-        /* Panel Lateral (Información) */
+        /* Panel Lateral */
         .sidebar {
             width: 350px;
             background: white;
             overflow-y: auto;
             border-right: 1px solid #ddd;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
             z-index: 999;
+            flex-shrink: 0;
         }
 
-        /* El Mapa */
-        #map { flex: 1; background-color: #222; }
+        /* EL MAPA - Aquí estaba el problema antes */
+        #map { 
+            flex-grow: 1; /* Ocupa todo el ancho restante */
+            height: 100%; /* Ocupa toda la altura del padre */
+            background-color: #ddd; /* Color gris de fondo por si la imagen falla */
+        }
 
-        /* Estilos de las Tarjetas de Bus */
+        /* Tarjetas de Bus */
         .bus-card {
             border-left: 5px solid #cf002d;
             background: #fff;
             margin-bottom: 10px;
             transition: transform 0.2s;
         }
-        .bus-card:hover { transform: translateX(5px); background: #fff5f6; }
-        
-        .linea-badge {
-            background-color: #cf002d;
-            color: white;
-            font-weight: bold;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 1.2rem;
-        }
-
-        /* Estado Global */
+        .bus-card:hover { transform: translateX(5px); }
+        .linea-badge { background-color: #cf002d; color: white; padding: 5px 10px; border-radius: 5px; font-weight: bold; }
         .status-bar { padding: 15px; text-align: center; color: white; font-weight: bold; }
         .open { background-color: #198754; }
         .closed { background-color: #dc3545; }
@@ -63,34 +77,24 @@
 
     <!-- CABECERA -->
     <div class="emt-header d-flex justify-content-between align-items-center">
-        <div class="d-flex align-items-center">
-            <!-- Si tienes el logo guardado, descomenta la linea de abajo -->
-            <!-- <img src="logo_emt.png" height="40" class="me-3"> -->
-            <h3 class="m-0 fw-bold" style="letter-spacing: -1px;">EMT <span class="fw-light small">GEOPORTAL</span></h3>
-        </div>
+        <h3 class="m-0 fw-bold" style="letter-spacing: -1px;">EMT <span class="fw-light small">GEOPORTAL</span></h3>
         <a href="index.html" class="btn btn-sm btn-outline-light">Volver a Inicio</a>
     </div>
 
     <!-- CONTENIDO -->
     <div class="main-content">
         
-        <!-- BARRA LATERAL: INFO EN TIEMPO REAL -->
+        <!-- BARRA LATERAL -->
         <div class="sidebar">
             <div class="p-4 bg-light border-bottom">
                 <h5 class="text-secondary fw-bold mb-3">INFORMACIÓN DEL SERVICIO</h5>
-                <div id="estadoGlobal" class="status-bar closed rounded mb-3">
-                    CARGANDO ESTADO...
-                </div>
-                <small class="text-muted d-block mb-2">Consulta aquí qué líneas están operativas ahora mismo en la ciudad.</small>
+                <div id="estadoGlobal" class="status-bar closed rounded mb-3">CONECTANDO...</div>
+                <small class="text-muted">Consulta qué líneas están operativas.</small>
             </div>
 
-            <div class="p-3">
-                <h6 class="text-muted fw-bold ms-2 mb-3">AUTOBUSES EN CIRCULACIÓN</h6>
-                <div id="listaBuses">
-                    <!-- AQUÍ SE INYECTAN LOS BUSES DESDE JAVASCRIPT -->
-                    <div class="text-center py-5 text-muted">
-                        <span class="spinner-border spinner-border-sm"></span> Conectando con GPS...
-                    </div>
+            <div class="p-3" id="listaBuses">
+                <div class="text-center py-5 text-muted">
+                    <span class="spinner-border spinner-border-sm"></span> Buscando señal GPS...
                 </div>
             </div>
         </div>
@@ -104,56 +108,50 @@
         import { db, collection, query, onSnapshot } from "./firebase.js";
 
         // --- 1. CONFIGURACIÓN DEL MAPA (LEAFLET) ---
-        // Esto hace que tu imagen se comporte como un mapa real
         
-        // Dimensiones aproximadas de la imagen (puedes ajustarlo)
-        const mapWidth = 2000; 
-        const mapHeight = 2000;
-
+        // Creamos el mapa
         const map = L.map('map', {
-            crs: L.CRS.Simple, // Sistema de coordenadas simple para imágenes
+            crs: L.CRS.Simple, // Sistema simple (para imágenes, no GPS real)
             minZoom: -2,
             maxZoom: 2,
-            zoomControl: false // Quitamos el zoom por defecto para moverlo
+            zoomControl: true
         });
 
-        // Cargar tu imagen (Asegúrate que se llame así en la carpeta)
-        const bounds = [[0,0], [mapHeight, mapWidth]];
-        const image = L.imageOverlay('mapa_roleplay.jpg', bounds).addTo(map);
+        // DEFINIMOS EL TAMAÑO DE LA IMAGEN
+        // Si no se ve bien, puedes jugar con estos números (ej: 2000x2000)
+        const w = 2000;
+        const h = 1500;
+        const urlImagen = 'mapa_roleplay.jpg'; // <--- ASEGÚRATE QUE EL NOMBRE ES EXACTO
 
-        // Centrar el mapa
+        // Definimos los límites de la imagen
+        const southWest = map.unproject([0, h], map.getMaxZoom() - 1);
+        const northEast = map.unproject([w, 0], map.getMaxZoom() - 1);
+        const bounds = new L.LatLngBounds(southWest, northEast);
+
+        // Cargamos la imagen
+        L.imageOverlay(urlImagen, bounds).addTo(map);
+
+        // Centramos el mapa en la imagen
+        map.setMaxBounds(bounds);
         map.fitBounds(bounds);
-        L.control.zoom({ position: 'topright' }).addTo(map);
 
-        // --- 2. CONEXIÓN CON FIREBASE (DATOS REALES) ---
-        const q = query(collection(db, "rutas_activas"));
+        // --- 2. CONEXIÓN CON FIREBASE ---
         const listaBusesDiv = document.getElementById('listaBuses');
         const estadoGlobalDiv = document.getElementById('estadoGlobal');
 
-        onSnapshot(q, (snapshot) => {
-            listaBusesDiv.innerHTML = ""; // Limpiar lista anterior
-            let busesCount = 0;
-
+        onSnapshot(query(collection(db, "rutas_activas")), (snapshot) => {
+            listaBusesDiv.innerHTML = "";
+            
             if (snapshot.empty) {
-                // SI NO HAY BUSES
                 estadoGlobalDiv.innerText = "🔴 SERVICIO CERRADO";
                 estadoGlobalDiv.className = "status-bar closed rounded mb-3";
-                listaBusesDiv.innerHTML = `
-                    <div class="text-center py-4">
-                        <span class="material-icons fs-1 text-muted">no_transfer</span>
-                        <p class="text-muted mt-2">No hay líneas activas en este momento.</p>
-                    </div>
-                `;
+                listaBusesDiv.innerHTML = `<div class="text-center py-4 text-muted">No hay líneas activas.</div>`;
             } else {
-                // SI HAY BUSES
                 estadoGlobalDiv.innerText = "🟢 SERVICIO ABIERTO";
                 estadoGlobalDiv.className = "status-bar open rounded mb-3";
 
                 snapshot.forEach((doc) => {
                     const bus = doc.data();
-                    busesCount++;
-
-                    // Crear tarjeta del bus
                     const card = document.createElement("div");
                     card.className = "card bus-card shadow-sm p-3";
                     card.innerHTML = `
@@ -161,14 +159,11 @@
                             <div class="d-flex align-items-center">
                                 <span class="linea-badge me-3">${bus.linea}</span>
                                 <div>
-                                    <h6 class="fw-bold m-0 text-dark">Conductor: ${bus.nombre_conductor}</h6>
-                                    <small class="text-success">
-                                        <span class="material-icons align-middle" style="font-size:14px">podcasts</span> En ruta
-                                    </small>
+                                    <h6 class="fw-bold m-0 text-dark">${bus.nombre_conductor}</h6>
+                                    <small class="text-success">En ruta</small>
                                 </div>
                             </div>
                             <div class="text-end">
-                                <small class="text-muted d-block">Frecuencia</small>
                                 <strong>${bus.tiempo_estimado} min</strong>
                             </div>
                         </div>
