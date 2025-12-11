@@ -18,6 +18,7 @@
         <span class="text-white small">Contacto y ayuda</span>
         <div class="top-actions">
             <a href="#" class="text-white text-decoration-none small"><span class="material-icons align-middle fs-6">language</span> ES</a>
+            <!-- Este abre el login de conductor -->
             <a href="#" class="text-white text-decoration-none small ms-3" data-bs-toggle="modal" data-bs-target="#loginConductor"><span class="material-icons align-middle fs-6">person</span> Iniciar sesión</a>
         </div>
     </div>
@@ -36,8 +37,8 @@
                     <li class="nav-item"><a class="nav-link text-emt-hover" href="#">BUS</a></li>
                     <li class="nav-item"><a class="nav-link text-emt-hover" href="#">PARKING</a></li>
                     <li class="nav-item"><a class="nav-link text-emt-hover" href="#">EMPRESA</a></li>
-                    <li class="nav-item"><a class="nav-link text-emt-hover" href="#">COMUNICACIÓN</a></li>
-                    <li class="nav-item"><a class="nav-link text-emt-hover" href="admin.html">ADMIN</a></li> <!-- He añadido acceso directo a Admin aquí -->
+                    <!-- Enlace directo al ADMIN (Opcional) -->
+                    <li class="nav-item"><a class="nav-link text-emt-hover" href="admin.html">ZONA ADMIN</a></li>
                 </ul>
             </div>
         </div>
@@ -51,25 +52,30 @@
                     <h1 class="display-3 fw-bold">MOVIMEMT <br> ROLEPLAY</h1>
                     <p class="lead">Bienvenido al sistema de gestión de transporte público de la ciudad.</p>
                 </div>
-                <!-- TARJETA DE ACCESO RÁPIDO -->
+                
+                <!-- TARJETA DE ACCESO RÁPIDO (AQUÍ ESTÁBAN LOS FALLOS) -->
                 <div class="col-md-5 offset-md-1">
                     <div class="card border-0 shadow-lg p-4" style="border-radius: 15px;">
                         <h4 class="text-emt fw-bold mb-3">ACCESO RÁPIDO</h4>
                         <div class="d-grid gap-2">
-                            <!-- Botón 1: Login Conductores -->
+                            
+                            <!-- 1. Botón Login Conductor (Abre ventana modal) -->
                             <button class="btn btn-emt btn-lg text-start" data-bs-toggle="modal" data-bs-target="#loginConductor">
                                 <span class="material-icons align-middle me-2">directions_bus</span> Acceso Conductores (Tablet)
                             </button>
                             
-                            <!-- Botón 2: Bonos (Futuro) -->
-                            <button class="btn btn-outline-dark btn-lg text-start">
-                                <span class="material-icons align-middle me-2">credit_card</span> Consultar Saldo / Bonos
-                            </button>
+                            <!-- 2. Botón MÁQUINA DE BONOS (ENLACE CORREGIDO) -->
+                            <!-- Antes era un <button>, ahora es un <a> que lleva a maquina.html -->
+                            <a href="maquina.html" class="btn btn-outline-dark btn-lg text-start text-decoration-none">
+                                <span class="material-icons align-middle me-2">confirmation_number</span> Comprar Bonos / Tickets
+                            </a>
                             
-                            <!-- Botón 3: Mapa (AHORA CON EL ENLACE CORRECTO) -->
+                            <!-- 3. Botón MAPA (ENLACE CORREGIDO) -->
+                            <!-- Lleva a mapa.html -->
                             <a href="mapa.html" class="btn btn-outline-dark btn-lg text-start text-decoration-none">
                                 <span class="material-icons align-middle me-2">map</span> Estado de Líneas y Mapa
                             </a>
+
                         </div>
                     </div>
                 </div>
@@ -77,20 +83,19 @@
         </div>
     </header>
 
-    <!-- BARRA SEPARADORA -->
+    <!-- BARRA ROJA SEPARADORA -->
     <div class="bg-emt p-4"></div>
 
     <!-- SECCIÓN DE INFORMACIÓN -->
     <section class="container my-5">
         <div class="row">
-            <!-- Estado del Servicio (AHORA ES DINÁMICO) -->
+            <!-- Estado del Servicio Dinámico -->
             <div class="col-md-4 mb-4">
                 <div class="d-flex">
                     <span class="material-icons text-emt fs-1 me-3">traffic</span>
                     <div>
                         <h5 class="text-emt fw-bold">ESTADO DEL SERVICIO</h5>
                         <p class="text-muted small">Consulta en tiempo real si la empresa está operativa.</p>
-                        <!-- Este badge cambiará solo gracias al script de abajo -->
                         <span id="badgeEstadoHome" class="badge bg-secondary">Cargando estado...</span>
                     </div>
                 </div>
@@ -111,8 +116,7 @@
                     <span class="material-icons text-emt fs-1 me-3">payment</span>
                     <div>
                         <h5 class="text-emt fw-bold">SALDO Y RECARGAS</h5>
-                        <p class="text-muted small">Introduce tu número de tarjeta móbilis.</p>
-                        <input type="text" class="form-control bg-light border-0" placeholder="Número tarjeta...">
+                        <p class="text-muted small">Accede al menú "Comprar Bonos" de arriba para gestionar tu saldo.</p>
                     </div>
                 </div>
             </div>
@@ -143,20 +147,18 @@
     <!-- LÓGICA DE LOGIN (Main.js) -->
     <script type="module" src="main.js"></script>
 
-    <!-- LÓGICA EXTRA: ESTADO EN TIEMPO REAL EN LA HOME -->
+    <!-- LÓGICA EXTRA: ESTADO EN TIEMPO REAL -->
     <script type="module">
         import { db, collection, onSnapshot } from "./firebase.js";
 
-        // Escuchamos si hay rutas activas para cambiar el letrero de la portada
         const badgeHome = document.getElementById('badgeEstadoHome');
         
+        // Escuchar si hay rutas activas
         onSnapshot(collection(db, "rutas_activas"), (snapshot) => {
             if (snapshot.empty) {
-                // Si no hay nadie trabajando
                 badgeHome.innerText = "🔴 EMPRESA CERRADA";
                 badgeHome.className = "badge bg-danger";
             } else {
-                // Si hay gente trabajando
                 badgeHome.innerText = `🟢 EMPRESA ABIERTA (${snapshot.size} en ruta)`;
                 badgeHome.className = "badge bg-success";
             }
