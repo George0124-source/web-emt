@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Punto de Venta EMT Valencia</title>
+    <!-- Fuentes estilo digital/ticket -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <style>
+        /* --- ESTILOS VISUALES --- */
+        body {
+            background-color: #d1d8e0;
+            font-family: 'Orbitron', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            user-select: none;
+        }
+
+        .maquina-container {
+            width: 900px; /* Un poco más ancha para que quepan bien los botones */
+            background-color: #2d3436;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            border: 3px solid #636e72;
+        }
+
+        /* CABECERA */
+        .header-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            color: #b2bec3;
+            font-size: 0.8rem;
+            border-bottom: 1px solid #444;
+            padding-bottom: 10px;
+        }
+
+        /* 1. ZONA HARDWARE */
+        .top-panel {
+            background-color: #1e272e;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+            margin-bottom: 25px;
+            border-left: 5px solid #cf002d;
+        }
+
+        .slot {
+            background: #000;
+            height: 10px;
+            width: 100px;
+            border-radius: 5px;
+            margin: 0 auto 5px auto;
+            border: 1px solid #555;
+            box-shadow: 0 0 10px rgba(255,255,255,0.1);
+        }
+
+        .bill-group { display: flex; flex-direction: row; gap: 10px; } /* Billetes en horizontal ahora */
+        .btn-bill {
+            width: 60px;
+            padding: 8px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.1s;
+            text-align: center;
+            box-shadow: 0 3px 0 rgba(0,0,0,0.4);
+        }
+        .btn-bill:active { transform: translateY(3px); box-shadow: none; }
+        .bill-5 { background: #95a5a6; color: #2d3436; }
+        .bill-10 { background: #ff7675; color: white; }
+        .bill-20 { background: #74b9ff; color: white; }
+        .bill-50 { background: #fdcb6e; color: #2d3436; }
+
+        /* 2. CUERPO PRINCIPAL */
+        .main-body { display: flex; gap: 25px; height: 550px; } /* Más altura para más botones */
+
+        /* PANTALLA TÁCTIL */
+        .screen {
+            flex: 1.2;
+            background: linear-gradient(180deg, #cf002d 0%, #90001f 100%);
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            border: 8px solid #111;
+            position: relative;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
+        }
+        
+        .screen-top { text-align: right; font-family: 'Share Tech Mono'; font-size: 0.9rem; margin-bottom: 20px; }
+        .screen-content { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        
+        .title-main { font-size: 1.8rem; font-weight: bold; line-height: 1.2; text-shadow: 2px 2px 0 rgba(0,0,0,0.3); }
+        .subtitle { font-size: 1rem; margin-top: 10px; opacity: 0.9; font-weight: 300; }
+        
+        .saldo-display {
+            background-color: rgba(0,0,0,0.4);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-family: 'Share Tech Mono';
+            font-size: 2.5rem;
+            margin-top: 20px;
+            border: 2px solid rgba(255,255,255,0.2);
+            color: #fff;
+        }
+
+        /* BOTONERA */
+        .keypad {
+            flex: 1.8; /* Más ancho para los botones */
+            background: #222;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #444;
+            overflow-y: auto; /* Por si hay muchos botones */
+        }
+
+        .btn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            height: 100%;
+        }
+
+        .btn-product {
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.5);
+            transition: all 0.1s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 8px;
+            text-align: center;
+            min-height: 80px;
+        }
+        .btn-product:active { transform: translateY(4px); box-shadow: none; }
+        .btn-product .price { font-size: 1.1rem; font-weight: bold; font-family: 'Share Tech Mono'; margin-bottom: 4px; }
+        .btn-product .name { font-size: 0.75rem; text-transform: uppercase; line-height: 1.1; }
+
+        /* Colores Específicos */
+        .c-residente { background: #3498db; }
+        .c-joven { background: #9b59b6; }
+        .c-estudiante { background: #8e44ad; }
+        .c-social { background: #27ae60; }
+        .c-familia { background: #16a085; }
+        .c-monedero { background: #e67e22; }
+        .c-mensual { background: #f1c40f; color: #333; }
+        .c-cancel { background: #c0392b; grid-column: span 2; }
+
+        /* 3. TICKET */
+        .ticket-out {
+            width: 300px;
+            height: 12px;
+            background: #111;
+            margin: 20px auto 0 auto;
+            border-radius: 6px;
+            position: relative;
+        }
+
+        .ticket-wrapper {
+            width: 280px;
+            margin: 0 auto;
+            overflow: hidden;
+            position: absolute;
+            top: 10px; left: 10px;
+            height: 0;
+            transition: height 1s ease-out;
+            z-index: 100;
+        }
+
+        .ticket-paper {
+            background: #fff;
+            padding: 15px;
+            font-family: 'Share Tech Mono', monospace;
+            color: #000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            text-align: center;
+            transform: translateY(-100%);
+            transition: transform 1s ease-out;
+        }
+        .ticket-paper.printing { transform: translateY(0); }
+        
+        .ticket-logo { font-weight: bold; font-size: 1.1rem; margin-bottom: 5px; border-bottom: 2px solid #000; }
+        .ticket-item { text-align: left; font-size: 0.8rem; margin: 5px 0; }
+        .ticket-price { font-size: 1.5rem; font-weight: bold; margin-top: 10px; border-top: 1px dashed #000; padding-top: 5px; }
+
+    </style>
+</head>
+<body>
+
+    <div class="maquina-container">
+        <!-- HEADER -->
+        <div class="header-panel">
+            <div>🟢 RED EMT ONLINE</div>
+            <div style="font-weight: bold; color: white;">MÁQUINA EXPENDEDORA v3.5</div>
+            <div>ID: MAQ-VAL-01</div>
+        </div>
+
+        <!-- 1. HARDWARE -->
+        <div class="top-panel">
+            <div style="text-align: center;">
+                <span class="material-icons" style="font-size: 2rem;">nfc</span>
+                <div style="font-size: 0.6rem;">TARJETA</div>
+            </div>
+
+            <div style="flex-grow: 1; text-align: center; padding: 0 20px;">
+                <div class="slot"></div>
+                <div style="font-size: 0.6rem;">INTRODUZCA EFECTIVO</div>
+            </div>
+
+            <div class="bill-group">
+                <button class="btn-bill bill-5" onclick="meterDinero(5)">5€</button>
+                <button class="btn-bill bill-10" onclick="meterDinero(10)">10€</button>
+                <button class="btn-bill bill-20" onclick="meterDinero(20)">20€</button>
+                <button class="btn-bill bill-50" onclick="meterDinero(50)">50€</button>
+            </div>
+        </div>
+
+        <!-- 2. INTERFAZ -->
+        <div class="main-body">
+            <!-- PANTALLA -->
+            <div class="screen">
+                <div class="screen-top" id="reloj">--:--</div>
+                
+                <!-- ESTADO NORMAL -->
+                <div id="pantallaNormal" class="screen-content">
+                    <div class="title-main">EMT VALENCIA</div>
+                    <div class="subtitle">Seleccione el bono deseado</div>
+                    
+                    <div class="saldo-display"><span id="saldoDisplay">0.00</span> €</div>
+                    <div class="subtitle">SALDO DISPONIBLE</div>
+                </div>
+
+                <!-- PROCESANDO -->
+                <div id="pantallaProceso" class="screen-content" style="display: none;">
+                    <span class="material-icons" style="font-size: 4rem; animation: spin 1s infinite linear;">print</span>
+                    <div class="title-main" style="margin-top: 20px;">IMPRIMIENDO</div>
+                    <div class="subtitle">Recoja su ticket abajo</div>
+                </div>
+            </div>
+
+            <!-- BOTONERA DE BONOS (TUS PRODUCTOS) -->
+            <div class="keypad">
+                <div class="btn-grid">
+                    <!-- 1. Bono Residente -->
+                    <button class="btn-product c-residente" onclick="comprar('Bono Residente', 10.00)">
+                        <div class="price">10.00€</div>
+                        <div class="name">Bono Residente<br>Valencia</div>
+                    </button>
+
+                    <!-- 2. Bono Joven -->
+                    <button class="btn-product c-joven" onclick="comprar('Bono Joven', 20.00)">
+                        <div class="price">20.00€</div>
+                        <div class="name">Bono Joven<br>(12-30 años)</div>
+                    </button>
+
+                    <!-- 3. Bono Estudiante -->
+                    <button class="btn-product c-estudiante" onclick="comprar('Bono Estudiante', 15.00)">
+                        <div class="price">15.00€</div>
+                        <div class="name">Bono<br>Estudiante</div>
+                    </button>
+
+                    <!-- 4. Senior / Mayores 65 -->
+                    <button class="btn-product c-social" onclick="comprar('Bono Senior +65', 5.00)">
+                        <div class="price">5.00€</div>
+                        <div class="name">Bono Senior<br>Pensionista</div>
+                    </button>
+
+                    <!-- 5. Discapacidad -->
+                    <button class="btn-product c-social" onclick="comprar('Bono Discapacidad', 3.00)">
+                        <div class="price">3.00€</div>
+                        <div class="name">Bono<br>Discapacidad</div>
+                    </button>
+
+                    <!-- 6. Familia Numerosa -->
+                    <button class="btn-product c-familia" onclick="comprar('Bono Fam. Numerosa', 8.00)">
+                        <div class="price">8.00€</div>
+                        <div class="name">Familia<br>Numerosa</div>
+                    </button>
+
+                    <!-- 7. Bono Social -->
+                    <button class="btn-product c-social" onclick="comprar('Bono Social', 2.00)">
+                        <div class="price">2.00€</div>
+                        <div class="name">Bono<br>Social</div>
+                    </button>
+
+                    <!-- 8. Monedero -->
+                    <button class="btn-product c-monedero" onclick="comprar('Tarjeta Monedero + 10€', 12.00)">
+                        <div class="price">12.00€</div>
+                        <div class="name">EMTVLC<br>Monedero</div>
+                    </button>
+
+                    <!-- 9. Abono Mensual -->
+                    <button class="btn-product c-mensual" onclick="comprar('Abono Mensual', 35.00)">
+                        <div class="price">35.00€</div>
+                        <div class="name">Abono Mensual<br>Ilimitado</div>
+                    </button>
+
+                    <!-- CANCELAR -->
+                    <button class="btn-product c-cancel" style="grid-column: span 1;" onclick="devolverCambio()">
+                        <div class="name" style="font-size: 0.9rem;">❌ CANCELAR</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. SALIDA TICKET -->
+        <div class="ticket-out">
+            <div class="ticket-wrapper" id="ticketWrapper">
+                <div class="ticket-paper" id="ticketPaper">
+                    <div class="ticket-logo">EMT VALENCIA</div>
+                    <div class="ticket-item">FECHA: <span id="tFecha">--/--</span> <span id="tHora">--:--</span></div>
+                    <hr style="border: 0.5px dashed #000;">
+                    <div style="text-align: left; font-weight: bold; margin-top: 10px;">PRODUCTO:</div>
+                    <div style="text-align: left; font-size: 1rem; line-height: 1.1;" id="tConcepto">...</div>
+                    <div class="ticket-price">TOTAL: <span id="tPrecio">0.00€</span></div>
+                    <div style="font-size: 0.6rem; margin-top: 10px;">* Personal e Intransferible *</div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px;">
+             <a href="index.html" style="color: #636e72; text-decoration: none;">[ VOLVER AL MENÚ PRINCIPAL ]</a>
+        </div>
+    </div>
+
+    <style> @keyframes spin { 100% { transform: rotate(360deg); } } </style>
+
+    <!-- LÓGICA -->
+    <script type="module">
+        import { db, collection, addDoc } from "./firebase.js";
+
+        let saldo = 0.00;
+
+        // FUNCIONES PÚBLICAS
+        window.meterDinero = function(cantidad) {
+            saldo += cantidad;
+            document.getElementById('saldoDisplay').innerText = saldo.toFixed(2);
+        };
+
+        window.devolverCambio = function() {
+            if(saldo > 0) {
+                alert(`💵 Se ha devuelto: ${saldo.toFixed(2)}€`);
+                saldo = 0.00;
+                document.getElementById('saldoDisplay').innerText = "0.00";
+            }
+        };
+
+        window.comprar = async function(producto, precio) {
+            if (saldo < precio) {
+                alert(`⚠️ SALDO INSUFICIENTE\n\nEste bono cuesta: ${precio.toFixed(2)}€\nTienes: ${saldo.toFixed(2)}€`);
+                return;
+            }
+
+            // Cobrar
+            saldo -= precio;
+            document.getElementById('saldoDisplay').innerText = saldo.toFixed(2);
+
+            // Pantalla carga
+            document.getElementById('pantallaNormal').style.display = 'none';
+            document.getElementById('pantallaProceso').style.display = 'flex';
+
+            // Datos Ticket
+            const ahora = new Date();
+            document.getElementById('tFecha').innerText = ahora.toLocaleDateString();
+            document.getElementById('tHora').innerText = ahora.toLocaleTimeString();
+            document.getElementById('tConcepto').innerText = producto.toUpperCase();
+            document.getElementById('tPrecio').innerText = precio.toFixed(2) + "€";
+
+            animarTicket();
+
+            // Guardar en Firebase (Offline-safe)
+            try {
+                if(db) {
+                    await addDoc(collection(db, "facturas"), {
+                        emisor_nombre: "Máquina Bono",
+                        emisor_id: "MAQ-01",
+                        cliente: "Anonimo",
+                        concepto: producto,
+                        importe: precio + "€",
+                        fecha: ahora.toLocaleDateString(),
+                        hora: ahora.toLocaleTimeString(),
+                        timestamp: ahora.toISOString()
+                    });
+                }
+            } catch (e) {
+                console.log("Ticket emitido offline");
+            }
+
+            // Restaurar pantalla
+            setTimeout(() => {
+                document.getElementById('pantallaNormal').style.display = 'flex';
+                document.getElementById('pantallaProceso').style.display = 'none';
+            }, 4500);
+        };
+
+        function animarTicket() {
+            const wrapper = document.getElementById('ticketWrapper');
+            const paper = document.getElementById('ticketPaper');
+            
+            setTimeout(() => {
+                wrapper.style.height = "320px";
+                paper.classList.add('printing');
+            }, 500);
+
+            setTimeout(() => {
+                paper.classList.remove('printing');
+                wrapper.style.height = "0";
+            }, 6000);
+        }
+
+        // Reloj
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('reloj').innerText = now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+        }, 1000);
+
+    </script>
+</body>
+</html>
