@@ -3,128 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bolsa de Trabajo - EMT Valencia</title>
-    <!-- Bootstrap y Estilos -->
+    <title>Oposiciones EMT - Login Seguro</title>
+    <!-- Bootstrap & Google Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
     <style>
-        body { background-color: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
-        
-        .header-oposiciones {
-            background-color: #cf002d;
-            color: white;
-            padding: 40px 0;
-            margin-bottom: 30px;
+        body { 
+            background-color: #f0f2f5; 
+            font-family: 'Segoe UI', system-ui, sans-serif;
             background-image: url('https://www.emtvalencia.es/ciudadano/images/cabeceras/cabecera_home.jpg');
             background-size: cover;
-            background-blend-mode: multiply;
+            background-attachment: fixed;
+            background-blend-mode: overlay;
         }
-
-        .card-form {
-            border: none;
+        
+        /* Contenedor principal */
+        .main-card {
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             overflow: hidden;
+            margin-top: 50px;
+            margin-bottom: 50px;
         }
 
-        .card-header-custom {
-            background-color: white;
-            padding: 25px;
-            border-bottom: 1px solid #eee;
+        /* Cabecera Roja */
+        .header-red {
+            background: #cf002d;
+            color: white;
+            padding: 30px;
+            text-align: center;
         }
 
-        .form-label { font-weight: bold; color: #333; font-size: 0.9rem; }
-        .btn-emt { background-color: #cf002d; color: white; font-weight: bold; transition: 0.3s; }
-        .btn-emt:hover { background-color: #a00023; color: white; }
+        /* Botón Discord */
+        .btn-discord {
+            background-color: #5865F2;
+            color: white;
+            font-weight: bold;
+            padding: 12px 25px;
+            border-radius: 8px;
+            border: none;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            font-size: 1.1rem;
+        }
+        .btn-discord:hover { background-color: #4752c4; color: white; transform: translateY(-2px); }
+
+        /* Pasos del Formulario */
+        .step-title {
+            color: #cf002d;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            margin-top: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .form-control:focus {
+            border-color: #cf002d;
+            box-shadow: 0 0 0 0.25rem rgba(207, 0, 45, 0.25);
+        }
     </style>
 </head>
 <body>
 
-    <!-- CABECERA -->
-    <div class="header-oposiciones text-center">
-        <div class="container">
-            <h1 class="fw-bold display-5">ÚNETE AL EQUIPO</h1>
-            <p class="lead">Bolsa de Trabajo y Oposiciones - EMT Valencia</p>
-            <a href="index.html" class="btn btn-outline-light btn-sm mt-2">← VOLVER AL INICIO</a>
-        </div>
-    </div>
-
-    <!-- CONTENIDO PRINCIPAL -->
-    <div class="container mb-5">
+    <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 
-                <!-- TARJETA DEL FORMULARIO -->
-                <div class="card card-form">
-                    <div class="card-header-custom text-center">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/EMT_Valencia_logo.svg/2560px-EMT_Valencia_logo.svg.png" width="100" class="mb-3">
-                        <h4 class="fw-bold m-0">SOLICITUD DE INGRESO</h4>
-                        <p class="text-muted small m-0">Convocatoria Abierta - Conductores de Autobús</p>
+                <div class="main-card">
+                    
+                    <!-- CABECERA -->
+                    <div class="header-red">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/EMT_Valencia_logo.svg/2560px-EMT_Valencia_logo.svg.png" width="80" class="bg-white p-2 rounded mb-3">
+                        <h2 class="fw-bold m-0">OPOSICIONES A CONDUCTOR</h2>
+                        <p class="m-0 opacity-75">Portal del Candidato - Acceso Seguro</p>
                     </div>
 
-                    <div class="card-body p-4">
-                        
-                        <!-- EL FORMULARIO -->
-                        <div id="formularioOpo">
-                            <div class="row g-3">
-                                <!-- Datos Personales (IC) -->
+                    <div class="p-5">
+
+                        <!-- FASE 1: LOGIN CON DISCORD (Visible al principio) -->
+                        <div id="seccionLogin" class="text-center py-4">
+                            <h3 class="fw-bold mb-3">Identificación Requerida</h3>
+                            <p class="text-muted mb-4">Para evitar fraudes y suplantación de identidad, es necesario que vincules tu cuenta de Discord antes de rellenar el formulario.</p>
+                            
+                            <div class="row justify-content-center">
                                 <div class="col-md-8">
-                                    <label class="form-label">Nombre y Apellidos (IC)</label>
-                                    <input type="text" id="opoNombre" class="form-control" placeholder="Ej: Manolo García">
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Edad (IC)</label>
-                                    <input type="number" id="opoEdad" class="form-control" placeholder="Ej: 25">
-                                </div>
-
-                                <!-- Datos de Contacto (OOC) -->
-                                <div class="col-12">
-                                    <label class="form-label">Usuario de Discord (OOC)</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-light">@</span>
-                                        <input type="text" id="opoDiscord" class="form-control" placeholder="usuario_discord">
-                                    </div>
-                                    <div class="form-text text-muted">Te contactaremos por aquí si eres seleccionado.</div>
-                                </div>
-
-                                <!-- Experiencia -->
-                                <div class="col-12 mt-3">
-                                    <label class="form-label">Experiencia y Motivación</label>
-                                    <textarea id="opoExp" class="form-control" rows="5" placeholder="Cuéntanos si has conducido antes, por qué quieres entrar a la EMT..."></textarea>
-                                </div>
-
-                                <!-- Checks legales -->
-                                <div class="col-12 mt-3">
-                                    <div class="form-check p-3 bg-light rounded border">
-                                        <input class="form-check-input" type="checkbox" id="checkRequisitos">
-                                        <label class="form-check-label small" for="checkRequisitos">
-                                            Declaro que poseo <strong>Licencia de Conducir (B+D)</strong> válida en la ciudad y carezco de antecedentes penales graves recientes. Entiendo que mentir en esta solicitud conlleva el rechazo inmediato.
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <!-- Botón Enviar -->
-                                <div class="col-12 mt-4">
-                                    <button id="btnEnviar" class="btn btn-emt w-100 py-3 text-uppercase">
-                                        <span class="material-icons align-middle me-2">send</span> Enviar Solicitud
+                                    <button onclick="loginDiscord()" class="btn btn-discord shadow">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037 13.593 13.593 0 0 0-.613 1.259 18.232 18.232 0 0 0-5.467 0c-.172-.423-.38-.853-.623-1.258a.072.072 0 0 0-.078-.035A19.835 19.835 0 0 0 3.673 4.37a.068.068 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.083.083 0 0 0 .03.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .085-.028c.462-.63.873-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.118.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .085.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .03-.057c.437-4.836-.534-9.52-3.606-13.66a.072.072 0 0 0-.031-.027zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.418 2.157-2.418 1.21 0 2.176 1.085 2.157 2.418 0 1.334-.956 2.419-2.157 2.419zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.418 2.157-2.418 1.21 0 2.176 1.085 2.157 2.418 0 1.334-.946 2.419-2.157 2.419z"/></svg>
+                                        INICIAR SESIÓN CON DISCORD
                                     </button>
                                 </div>
                             </div>
+                            <div class="mt-4">
+                                <a href="index.html" class="text-muted small text-decoration-none">← Volver al inicio</a>
+                            </div>
                         </div>
 
-                        <!-- MENSAJE DE ÉXITO (Oculto al principio) -->
-                        <div id="mensajeExito" class="text-center py-5 d-none">
-                            <div class="mb-3 text-success">
-                                <span class="material-icons" style="font-size: 5rem;">check_circle</span>
+                        <!-- FASE 2: FORMULARIO (Oculto hasta loguear) -->
+                        <div id="seccionFormulario" style="display: none;">
+                            
+                            <!-- Datos Autocompletados -->
+                            <div class="alert alert-primary d-flex align-items-center">
+                                <img id="discordAvatar" src="" class="rounded-circle me-3" width="40" height="40">
+                                <div>
+                                    <strong>Conectado como:</strong> <span id="discordUsername">Cargando...</span>
+                                    <div class="small">ID: <span id="discordID">...</span></div>
+                                </div>
                             </div>
-                            <h2 class="fw-bold">¡Solicitud Enviada!</h2>
-                            <p class="text-muted">Hemos recibido tu currículum correctamente.</p>
-                            <div class="alert alert-info mt-4">
-                                El departamento de Recursos Humanos revisará tu perfil en las próximas 24/48 horas.
-                                Si eres apto, recibirás un mensaje privado en Discord.
-                            </div>
-                            <a href="index.html" class="btn btn-dark mt-3">Volver a la Página Principal</a>
+
+                            <form onsubmit="return false;">
+                                <!-- SECCIÓN 1: DATOS IC -->
+                                <div class="step-title">1. Datos del Personaje (IC)</div>
+                                <div class="row g-3">
+                                    <div class="col-md-8">
+                                        <label class="form-label">Nombre y Apellido</label>
+                                        <input type="text" id="nombreIC" class="form-control" placeholder="Ej: Roberto Casas">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Edad</label>
+                                        <input type="number" id="edadIC" class="form-control" placeholder="Ej: 28">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="form-label">Teléfono de contacto</label>
+                                        <input type="text" id="telefonoIC" class="form-control" placeholder="Ej: 555-0123">
+                                    </div>
+                                </div>
+
+                                <!-- SECCIÓN 2: ENTREVISTA -->
+                                <div class="step-title">2. Entrevista Personal</div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">¿Por qué quieres trabajar en la EMT?</label>
+                                    <textarea id="pregunta1" class="form-control" rows="3"></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">¿Tienes experiencia previa como conductor? (Facciones anteriores)</label>
+                                    <textarea id="pregunta2" class="form-control" rows="2"></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Define "Roleplay" con tus propias palabras</label>
+                                    <textarea id="pregunta3" class="form-control" rows="2"></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">CASO PRÁCTICO:</label>
+                                    <p class="small text-muted">Vas conduciendo el autobús y un pasajero se niega a pagar el ticket y empieza a insultarte. ¿Qué harías?</p>
+                                    <textarea id="pregunta4" class="form-control" rows="3"></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Horario disponible (España)</label>
+                                    <input type="text" id="horario" class="form-control" placeholder="Ej: Tardes de 16:00 a 20:00">
+                                </div>
+
+                                <!-- SECCIÓN 3: REQUISITOS -->
+                                <div class="step-title">3. Requisitos Legales</div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="checkLicencia">
+                                    <label class="form-check-label small">Poseo licencia de conducir válida.</label>
+                                </div>
+                                <div class="form-check mb-4">
+                                    <input class="form-check-input" type="checkbox" id="checkNormativa">
+                                    <label class="form-check-label small">He leído y acepto la normativa del servidor.</label>
+                                </div>
+
+                                <button id="btnEnviar" class="btn btn-emt w-100 py-3 text-uppercase fw-bold" style="background: #cf002d; color: white;">
+                                    ENVIAR SOLICITUD
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <!-- PANTALLA EXITO -->
+                        <div id="seccionExito" class="text-center py-5" style="display: none;">
+                            <span class="material-icons text-success" style="font-size: 5rem;">check_circle</span>
+                            <h2 class="fw-bold mt-3">¡Recibido!</h2>
+                            <p>Tu solicitud ha sido enviada al Departamento de RRHH.</p>
+                            <a href="index.html" class="btn btn-outline-dark mt-3">Volver al Inicio</a>
                         </div>
 
                     </div>
@@ -133,62 +198,100 @@
         </div>
     </div>
 
-    <!-- LOGICA -->
+    <!-- SCRIPT DE LÓGICA -->
     <script type="module">
         import { db, collection, addDoc } from "./firebase.js";
 
+        // --- CONFIGURACIÓN DISCORD (¡CAMBIA ESTO!) ---
+        const CLIENT_ID = "PON_AQUI_TU_CLIENT_ID"; 
+        const REDIRECT_URI = "PON_AQUI_LA_URL_DE_GITHUB/oposiciones.html"; 
+        // Ejemplo: https://pepe.github.io/web-emt/oposiciones.html
+
+        // 1. FUNCIÓN LOGIN (Redirige a Discord)
+        window.loginDiscord = function() {
+            const url = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`;
+            window.location.href = url;
+        }
+
+        // 2. AL CARGAR LA PÁGINA (Comprobar si venimos de Discord)
+        window.onload = function() {
+            const fragment = new URLSearchParams(window.location.hash.slice(1));
+            const accessToken = fragment.get('access_token');
+
+            if (accessToken) {
+                // Tenemos token! Obtenemos datos del usuario
+                document.getElementById('seccionLogin').style.display = 'none';
+                document.getElementById('seccionFormulario').style.display = 'block';
+                
+                // Limpiar URL para que no se vea el token feo
+                window.history.pushState({}, document.title, window.location.pathname);
+
+                fetch('https://discord.com/api/users/@me', {
+                    headers: { authorization: `Bearer ${accessToken}` }
+                })
+                .then(res => res.json())
+                .then(response => {
+                    const { username, discriminator, id, avatar } = response;
+                    // Rellenar la tarjeta visual
+                    document.getElementById('discordUsername').innerText = `${username}#${discriminator}`;
+                    document.getElementById('discordID').innerText = id;
+                    document.getElementById('discordAvatar').src = `https://cdn.discordapp.com/avatars/${id}/${avatar}.png`;
+                })
+                .catch(console.error);
+            }
+        };
+
+        // 3. ENVIAR FORMULARIO
         const btnEnviar = document.getElementById('btnEnviar');
-        const formulario = document.getElementById('formularioOpo');
-        const mensajeExito = document.getElementById('mensajeExito');
-
         btnEnviar.addEventListener('click', async () => {
-            // 1. Coger datos
-            const nombre = document.getElementById('opoNombre').value;
-            const edad = document.getElementById('opoEdad').value;
-            const discord = document.getElementById('opoDiscord').value;
-            const exp = document.getElementById('opoExp').value;
-            const check = document.getElementById('checkRequisitos').checked;
+            // Validaciones
+            const nombre = document.getElementById('nombreIC').value;
+            const check1 = document.getElementById('checkLicencia').checked;
+            const check2 = document.getElementById('checkNormativa').checked;
 
-            // 2. Validaciones
-            if (!nombre || !edad || !discord || !exp) {
-                alert("⚠️ Por favor, rellena todos los campos obligatorios.");
+            if(!nombre || !document.getElementById('pregunta1').value) {
+                alert("Por favor, rellena todas las preguntas.");
+                return;
+            }
+            if(!check1 || !check2) {
+                alert("Debes aceptar los requisitos.");
                 return;
             }
 
-            if (!check) {
-                alert("⛔ Debes aceptar los requisitos legales y la licencia.");
-                return;
-            }
-
-            // 3. Efecto de carga
             btnEnviar.disabled = true;
-            btnEnviar.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Enviando...';
+            btnEnviar.innerText = "ENVIANDO...";
 
             try {
-                // 4. Guardar en Firebase
+                // Recopilar TODA la info
                 await addDoc(collection(db, "oposiciones"), {
                     nombre_ic: nombre,
-                    edad_ic: edad,
-                    discord_ooc: discord,
-                    experiencia: exp,
-                    fecha: new Date().toLocaleDateString(),
-                    hora: new Date().toLocaleTimeString(),
-                    estado: "PENDIENTE", // Para que luego podáis aprobarlo/rechazarlo
-                    timestamp: new Date().toISOString()
+                    edad_ic: document.getElementById('edadIC').value,
+                    telefono: document.getElementById('telefonoIC').value,
+                    
+                    // Datos de Discord (Automáticos)
+                    discord_tag: document.getElementById('discordUsername').innerText,
+                    discord_id: document.getElementById('discordID').innerText,
+                    
+                    // Entrevista
+                    motivo: document.getElementById('pregunta1').value,
+                    experiencia: document.getElementById('pregunta2').value,
+                    def_roleplay: document.getElementById('pregunta3').value,
+                    caso_practico: document.getElementById('pregunta4').value,
+                    horario: document.getElementById('horario').value,
+                    
+                    fecha: new Date().toLocaleString(),
+                    estado: "PENDIENTE"
                 });
 
-                // 5. Mostrar éxito
-                formulario.classList.add('d-none'); // Ocultar form
-                mensajeExito.classList.remove('d-none'); // Mostrar mensaje
+                document.getElementById('seccionFormulario').style.display = 'none';
+                document.getElementById('seccionExito').style.display = 'block';
 
             } catch (e) {
-                console.error("Error:", e);
-                alert("❌ Hubo un error al enviar la solicitud. Inténtalo de nuevo.");
+                console.error(e);
+                alert("Error al enviar.");
                 btnEnviar.disabled = false;
-                btnEnviar.innerText = "Enviar Solicitud";
             }
         });
     </script>
-
 </body>
 </html>
