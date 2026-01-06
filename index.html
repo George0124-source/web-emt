@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMT Valencia - Mantenimiento</title>
+    <title>EMT Valencia - Roleplay</title>
     <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/EMT_Valencia_logo.svg/128px-EMT_Valencia_logo.svg.png" type="image/png">
     <!-- Iconos de Google -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -16,63 +16,130 @@
 
     <!-- BARRA SUPERIOR ROJA -->
     <div class="top-bar d-flex justify-content-between align-items-center px-4">
-        <span class="text-white small">EMT Valencia</span>
+        <span class="text-white small">Contacto y ayuda</span>
         <div class="top-actions">
             <a href="#" class="text-white text-decoration-none small"><span class="material-icons align-middle fs-6">language</span> ES</a>
+            <!-- Este abre el login de conductor -->
+            <a href="#" class="text-white text-decoration-none small ms-3" data-bs-toggle="modal" data-bs-target="#loginConductor"><span class="material-icons align-middle fs-6">person</span> Iniciar sesi贸n</a>
         </div>
     </div>
 
-    <!-- CONTENIDO PRINCIPAL DE MANTENIMIENTO -->
-    <div class="maintenance-container d-flex align-items-center justify-content-center min-vh-100">
-        <div class="container text-center">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <!-- Logo EMT -->
-                    <div class="mb-4">
-                        <h1 class="text-emt fw-bold display-1">EMT</h1>
-                        <h2 class="text-dark fs-3">VALÈNCIA</h2>
-                    </div>
-                    
-                    <!-- Icono de mantenimiento -->
-                    <div class="mb-4">
-                        <span class="material-icons maintenance-icon">build</span>
-                    </div>
-                    
-                    <!-- Mensaje principal -->
-                    <h3 class="text-emt fw-bold mb-4">SITIO EN MANTENIMIENTO</h3>
-                    
-                    <!-- Mensaje secundario -->
-                    <p class="lead text-muted mb-4">
-                        Estamos realizando mejoras en nuestro sistema para ofrecerte un mejor servicio.<br>
-                        Te pedimos disculpas por las molestias.
-                    </p>
-                    
-                    <!-- Información adicional -->
-                    <div class="maintenance-info bg-light p-4 rounded-3 mb-4">
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <span class="material-icons text-emt fs-2 mb-2 d-block">schedule</span>
-                                <h5 class="text-emt fw-bold">Tiempo estimado</h5>
-                                <p class="small text-muted">Volveremos pronto</p>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <span class="material-icons text-emt fs-2 mb-2 d-block">support_agent</span>
-                                <h5 class="text-emt fw-bold">Soporte</h5>
-                                <p class="small text-muted">Contacta con administración</p>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <span class="material-icons text-emt fs-2 mb-2 d-block">notifications</span>
-                                <h5 class="text-emt fw-bold">Notificaciones</h5>
-                                <p class="small text-muted">Sigue nuestro Discord</p>
-                            </div>
+    <!-- MEN脷 DE NAVEGACI脫N -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <h2 class="text-emt fw-bold m-0" style="letter-spacing: -1px;">EMT <span class="text-dark small d-block fs-6 ls-normal">VAL脠NCIA</span></h2>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav fw-bold">
+                    <li class="nav-item"><a class="nav-link text-emt-hover" href="#">BUS</a></li>
+                    <li class="nav-item"><a class="nav-link text-emt-hover" href="#">PARKING</a></li>
+                    <!-- EN TU INDEX.HTML -->
+<li class="nav-item">
+    <a class="nav-link text-emt-hover" href="oposiciones.html">EMPRESA / OPOSICIONES</a>
+</li>
+                    <!-- Enlace directo al ADMIN (Opcional) -->
+                    <li class="nav-item"><a class="nav-link text-emt-hover" href="admin.html">ZONA ADMIN</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION (BANNER PRINCIPAL) -->
+    <header class="hero-section d-flex align-items-center text-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1 class="display-3 fw-bold">Web Oficial <br> EMT-Valencia</h1>
+                    <p class="lead">Bienvenido al sistema de gesti贸n de transporte p煤blico de la ciudad.</p>
+                </div>
+                
+                <!-- TARJETA DE ACCESO R脕PIDO (AQU脥 EST脕BAN LOS FALLOS) -->
+                <div class="col-md-5 offset-md-1">
+                    <div class="card border-0 shadow-lg p-4" style="border-radius: 15px;">
+                        <h4 class="text-emt fw-bold mb-3">ACCESO R脕PIDO</h4>
+                        <div class="d-grid gap-2">
+                            
+                            <!-- 1. Bot贸n Login Conductor (Abre ventana modal) -->
+                            <button class="btn btn-emt btn-lg text-start" data-bs-toggle="modal" data-bs-target="#loginConductor">
+                                <span class="material-icons align-middle me-2">directions_bus</span> Acceso Conductores (Tablet)
+                            </button>
+                            
+                            <!-- 2. Bot贸n M脕QUINA DE BONOS (ENLACE CORREGIDO) -->
+                            <!-- Antes era un <button>, ahora es un <a> que lleva a maquina.html -->
+                            <a href="maquina.html" class="btn btn-outline-dark btn-lg text-start text-decoration-none">
+                                <span class="material-icons align-middle me-2">confirmation_number</span> Comprar Bonos / Tickets
+                            </a>
+                            
+                            <!-- 3. Bot贸n MAPA (ENLACE CORREGIDO) -->
+                            <!-- Lleva a mapa.html -->
+                            <a href="mapa.html" class="btn btn-outline-dark btn-lg text-start text-decoration-none">
+                                <span class="material-icons align-middle me-2">map</span> Estado de L铆neas y Mapa
+                            </a>
+
                         </div>
                     </div>
-                    
-                    <!-- Botón de refresh -->
-                    <button class="btn btn-emt btn-lg" onclick="location.reload()">
-                        <span class="material-icons align-middle me-2">refresh</span>
-                        Comprobar estado
-                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- BARRA ROJA SEPARADORA -->
+    <div class="bg-emt p-4"></div>
+
+    <!-- SECCI脫N DE INFORMACI脫N -->
+    <section class="container my-5">
+        <div class="row">
+            <!-- Estado del Servicio Din谩mico -->
+            <div class="col-md-4 mb-4">
+                <div class="d-flex">
+                    <span class="material-icons text-emt fs-1 me-3">traffic</span>
+                    <div>
+                        <h5 class="text-emt fw-bold">ESTADO DEL SERVICIO</h5>
+                        <p class="text-muted small">Consulta en tiempo real si la empresa est谩 operativa.</p>
+                        <span id="badgeEstadoHome" class="badge bg-secondary">Cargando estado...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="d-flex">
+                    <span class="material-icons text-emt fs-1 me-3">smartphone</span>
+                    <div>
+                        <h5 class="text-emt fw-bold">APP / DISCORD</h5>
+                        <p class="text-muted small">脷nete a nuestro sistema de comunicaci贸n para opositar.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="d-flex">
+                    <span class="material-icons text-emt fs-1 me-3">payment</span>
+                    <div>
+                        <h5 class="text-emt fw-bold">SALDO Y RECARGAS</h5>
+                        <p class="text-muted small">Accede al men煤 "Comprar Bonos" de arriba para gestionar tu saldo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL LOGIN CONDUCTOR -->
+    <div class="modal fade" id="loginConductor" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-emt text-white">
+                    <h5 class="modal-title">Tablet de Conductor</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Ingresa tus credenciales para iniciar ruta.</p>
+                    <input type="text" id="conductorId" class="form-control mb-2" placeholder="ID de Empleado (Ej: C-001)">
+                    <input type="password" id="conductorPass" class="form-control mb-3" placeholder="Contrase帽a">
+                    <button id="btnLogin" class="btn btn-emt w-100">ENTRAR AL SISTEMA</button>
                 </div>
             </div>
         </div>
@@ -80,5 +147,26 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- L脫GICA DE LOGIN (Main.js) -->
+    <script type="module" src="main.js"></script>
+
+    <!-- L脫GICA EXTRA: ESTADO EN TIEMPO REAL -->
+    <script type="module">
+        import { db, collection, onSnapshot } from "./firebase.js";
+
+        const badgeHome = document.getElementById('badgeEstadoHome');
+        
+        // Escuchar si hay rutas activas
+        onSnapshot(collection(db, "rutas_activas"), (snapshot) => {
+            if (snapshot.empty) {
+                badgeHome.innerText = "馃敶 EMPRESA CERRADA";
+                badgeHome.className = "badge bg-danger";
+            } else {
+                badgeHome.innerText = `馃煝 EMPRESA ABIERTA (${snapshot.size} en ruta)`;
+                badgeHome.className = "badge bg-success";
+            }
+        });
+    </script>
 </body>
 </html>
