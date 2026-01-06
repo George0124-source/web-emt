@@ -25,33 +25,33 @@ body {
     background-color: var(--emt-red) !important;
 }
 
-/* Contenedor de mantenimiento */
-.maintenance-container {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    min-height: 100vh;
+/* Navegación */
+.navbar-nav .nav-link {
+    color: var(--emt-dark);
+    font-size: 0.9rem;
+    margin-left: 15px;
+    text-transform: uppercase;
+    font-weight: 700;
 }
 
-/* Icono de mantenimiento animado */
-.maintenance-icon {
-    font-size: 80px;
+.navbar-nav .nav-link:hover {
     color: var(--emt-red);
-    animation: pulse 2s infinite;
-    display: inline-block;
 }
 
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.1);
-        opacity: 0.8;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
+/* Hero Section (El banner grande) */
+.hero-section {
+    /* Aquí usaremos un degradado rojo similar a la foto. 
+       Si tienes una foto de fondo de buses del juego, ponla en url() */
+    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://www.emtvalencia.es/ciudadano/images/cabeceras/cabecera_home.jpg'); 
+    background-size: cover;
+    background-position: center;
+    min-height: 500px;
+    position: relative;
+}
+
+/* Si no carga la imagen de fondo, que se vea rojo al menos */
+.hero-section {
+    background-color: #a3001b; 
 }
 
 /* Botones personalizados */
@@ -60,40 +60,14 @@ body {
     color: white;
     border: none;
     font-weight: bold;
-    padding: 12px 30px;
-    border-radius: 25px;
-    transition: all 0.3s ease;
 }
 
 .btn-emt:hover {
     background-color: #a3001b;
     color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(207, 0, 45, 0.3);
 }
 
-/* Tarjeta de información de mantenimiento */
-.maintenance-info {
-    border-left: 4px solid var(--emt-red);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
-}
-
-.maintenance-info:hover {
-    transform: translateY(-5px);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .maintenance-icon {
-        font-size: 60px;
-    }
-    
-    .display-1 {
-        font-size: 3rem;
-    }
-    
-    .maintenance-info .col-md-4 {
-        margin-bottom: 1rem;
-    }
+/* Cards (Tarjetas) */
+.card {
+    background-color: rgba(255, 255, 255, 0.95);
 }
