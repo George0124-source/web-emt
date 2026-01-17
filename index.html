@@ -28,7 +28,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <h2 class="text-emt fw-bold m-0" style="letter-spacing: -1px;">EMT <span class="text-dark small d-block fs-6 ls-normal">VAL脠NCIA</span></h2>
+                <h2 class="text-emt fw-bold m-0" style="letter-spacing: -1px;">EMT <span class="text-dark small d-block fs-6 ls-normal">VALENCIA</span></h2>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -54,13 +54,13 @@
             <div class="row align-items-center">
                 <div class="col-md-6">
                     <h1 class="display-3 fw-bold">Web Oficial <br> EMT-Valencia</h1>
-                    <p class="lead">Bienvenido al sistema de gesti贸n de transporte p煤blico de la ciudad.</p>
+                    <p class="lead">Bienvenido al sistema de gestion de transporte publico de la ciudad.</p>
                 </div>
                 
                 <!-- TARJETA DE ACCESO R脕PIDO (AQU脥 EST脕BAN LOS FALLOS) -->
                 <div class="col-md-5 offset-md-1">
                     <div class="card border-0 shadow-lg p-4" style="border-radius: 15px;">
-                        <h4 class="text-emt fw-bold mb-3">ACCESO R脕PIDO</h4>
+                        <h4 class="text-emt fw-bold mb-3">ACCESO RAPIDO</h4>
                         <div class="d-grid gap-2">
                             
                             <!-- 1. Bot贸n Login Conductor (Abre ventana modal) -->
@@ -77,7 +77,7 @@
                             <!-- 3. Bot贸n MAPA (ENLACE CORREGIDO) -->
                             <!-- Lleva a mapa.html -->
                             <a href="mapa.html" class="btn btn-outline-dark btn-lg text-start text-decoration-none">
-                                <span class="material-icons align-middle me-2">map</span> Estado de L铆neas y Mapa
+                                <span class="material-icons align-middle me-2">map</span> Estado de Lineas y Mapa
                             </a>
 
                         </div>
@@ -99,7 +99,7 @@
                     <span class="material-icons text-emt fs-1 me-3">traffic</span>
                     <div>
                         <h5 class="text-emt fw-bold">ESTADO DEL SERVICIO</h5>
-                        <p class="text-muted small">Consulta en tiempo real si la empresa est谩 operativa.</p>
+                        <p class="text-muted small">Consulta en tiempo real si la empresa esta operativa.</p>
                         <span id="badgeEstadoHome" class="badge bg-secondary">Cargando estado...</span>
                     </div>
                 </div>
@@ -110,7 +110,7 @@
                     <span class="material-icons text-emt fs-1 me-3">smartphone</span>
                     <div>
                         <h5 class="text-emt fw-bold">APP / DISCORD</h5>
-                        <p class="text-muted small">脷nete a nuestro sistema de comunicaci贸n para opositar.</p>
+                        <p class="text-muted small">Unete a nuestro sistema de comunicacion para opositar.</p>
                     </div>
                 </div>
             </div>
@@ -120,7 +120,7 @@
                     <span class="material-icons text-emt fs-1 me-3">payment</span>
                     <div>
                         <h5 class="text-emt fw-bold">SALDO Y RECARGAS</h5>
-                        <p class="text-muted small">Accede al men煤 "Comprar Bonos" de arriba para gestionar tu saldo.</p>
+                        <p class="text-muted small">Accede al menu "Comprar Bonos" de arriba para gestionar tu saldo.</p>
                     </div>
                 </div>
             </div>
@@ -138,7 +138,7 @@
                 <div class="modal-body text-center">
                     <p>Ingresa tus credenciales para iniciar ruta.</p>
                     <input type="text" id="conductorId" class="form-control mb-2" placeholder="ID de Empleado (Ej: C-001)">
-                    <input type="password" id="conductorPass" class="form-control mb-3" placeholder="Contrase帽a">
+                    <input type="password" id="conductorPass" class="form-control mb-3" placeholder="Contraseña">
                     <button id="btnLogin" class="btn btn-emt w-100">ENTRAR AL SISTEMA</button>
                 </div>
             </div>
@@ -160,10 +160,10 @@
         // Escuchar si hay rutas activas
         onSnapshot(collection(db, "rutas_activas"), (snapshot) => {
             if (snapshot.empty) {
-                badgeHome.innerText = "馃敶 EMPRESA CERRADA";
+                badgeHome.innerText = "EMPRESA CERRADA";
                 badgeHome.className = "badge bg-danger";
             } else {
-                badgeHome.innerText = `馃煝 EMPRESA ABIERTA (${snapshot.size} en ruta)`;
+                badgeHome.innerText = `EMPRESA ABIERTA (${snapshot.size} en ruta)`;
                 badgeHome.className = "badge bg-success";
             }
         });
